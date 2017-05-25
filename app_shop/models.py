@@ -8,6 +8,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from text_unidecode import unidecode
 
 
 class Adres(models.Model):
@@ -18,14 +19,22 @@ class Adres(models.Model):
     nr_mieszkania = models.SmallIntegerField(blank=True, null=True)
     kod_pocztowy = models.IntegerField()
 
+    def __str__(self):
+        data = '%s %s' % (self.miejscowosc, self.nr_domu)
+        return unidecode(data)
+
     class Meta:
         managed = False
         db_table = 'Adres'
 
 
 class KategoriaSlownik(models.Model):
-    idkategoria = models.AutoField(db_column='idKategoria', primary_key=True)  # Field name made lowercase.
+    idkategoria = models.AutoField(db_column='idKategoria', primary_key=True)
     kategoria = models.CharField(max_length=20)
+
+    def __str__(self):
+        data = self.kategoria
+        return unidecode(data)
 
     class Meta:
         managed = False
@@ -33,14 +42,18 @@ class KategoriaSlownik(models.Model):
 
 
 class Klienci(models.Model):
-    idklient = models.AutoField(db_column='idKlient', primary_key=True)  # Field name made lowercase.
+    idklient = models.AutoField(db_column='idKlient', primary_key=True)
     login = models.CharField(max_length=15)
     haslo = models.CharField(max_length=45)
     imie = models.CharField(max_length=30)
     nazwisko = models.CharField(max_length=30)
     email = models.CharField(max_length=30)
     telefon = models.IntegerField(blank=True, null=True)
-    adres_idadres = models.ForeignKey(Adres, models.DO_NOTHING, db_column='Adres_idAdres')  # Field name made lowercase.
+    adres_idadres = models.ForeignKey(Adres, models.DO_NOTHING, db_column='Adres_idAdres')
+
+    def __str__(self):
+        data = self.login
+        return unidecode(data)
 
     class Meta:
         managed = False
@@ -58,6 +71,10 @@ class Ksiazka(models.Model):
     isbn = models.CharField(db_column='ISBN', max_length=20)  # Field name made lowercase.
     wydanie_idwydanie = models.ForeignKey('Wydanie', models.DO_NOTHING, db_column='Wydanie_idWydanie')
 
+    def __str__(self):
+        data = self.tytul
+        return unidecode(data)
+
     class Meta:
         managed = False
         db_table = 'Ksiazka'
@@ -68,6 +85,10 @@ class KsiazkaHasKategoriaSlownik(models.Model):
     ksiazka_idksiazka = models.ForeignKey(Ksiazka, models.DO_NOTHING, db_column='Ksiazka_idKsiazka', primary_key=True)  # Field name made lowercase.
     kategoria_slownik_idkategoria = models.ForeignKey(KategoriaSlownik, models.DO_NOTHING, db_column='Kategoria_slownik_idKategoria')  # Field name made lowercase.
 
+    def __str__(self):
+        data = '%s %s' % (self.ksiazka_idksiazka, self.kategoria_slownik_idkategoria)
+        return unidecode(data)
+
     class Meta:
         managed = False
         db_table = 'Ksiazka_has_Kategoria_slownik'
@@ -77,6 +98,10 @@ class KsiazkaHasKategoriaSlownik(models.Model):
 class NazwaWydawnictwaSlownik(models.Model):
     idnazwa_wyd = models.AutoField(db_column='idNazwa_wyd', primary_key=True)  # Field name made lowercase.
     nazwa_wydawnictwa = models.CharField(db_column='Nazwa_wydawnictwa', max_length=45)  # Field name made lowercase.
+
+    def __str__(self):
+        data = self.nazwa_wydawnictwa
+        return unidecode(data)
 
     class Meta:
         managed = False
@@ -89,6 +114,10 @@ class Recenzje(models.Model):
     klienci_idklient = models.ForeignKey(Klienci, models.DO_NOTHING, db_column='Klienci_idKlient')  # Field name made lowercase.
     ksiazka_idksiazka = models.ForeignKey(Ksiazka, models.DO_NOTHING, db_column='Ksiazka_idKsiazka')  # Field name made lowercase.
 
+    def __str__(self):
+        data = self.tresc
+        return unidecode(data)
+
     class Meta:
         managed = False
         db_table = 'Recenzje'
@@ -96,8 +125,11 @@ class Recenzje(models.Model):
 
 
 class StatusZamowieniaSlownik(models.Model):
-    idstatus_zamowienia_slownik = models.AutoField(db_column='idStatus_zamowienia_slownik', primary_key=True)  # Field name made lowercase.
-    status = models.CharField(db_column='Status', max_length=1)  # Field name made lowercase.
+    idstatus_zamowienia_slownik = models.AutoField(db_column='idStatus_zamowienia_slownik', primary_key=True)
+    status = models.CharField(db_column='Status', max_length=1)
+
+    def __str__(self):
+        return self.status
 
     class Meta:
         managed = False
@@ -105,11 +137,15 @@ class StatusZamowieniaSlownik(models.Model):
 
 
 class Wydanie(models.Model):
-    idwydanie = models.AutoField(db_column='idWydanie', primary_key=True)  # Field name made lowercase.
+    idwydanie = models.AutoField(db_column='idWydanie', primary_key=True)
     rok_wyd = models.DateField(blank=True, null=True)
     miejsce = models.CharField(max_length=20, blank=True, null=True)
     oprawa = models.CharField(max_length=1, blank=True, null=True)
     nazwa_wydawnictwa_slownik_idnazwa_wyd = models.ForeignKey(NazwaWydawnictwaSlownik, models.DO_NOTHING, db_column='Nazwa_wydawnictwa_slownik_idNazwa_wyd')  # Field name made lowercase.
+
+    def __str__(self):
+        data = '%s %s' % (self.miejsce, self.rok_wyd)
+        return unidecode(data)
 
     class Meta:
         managed = False
@@ -118,11 +154,14 @@ class Wydanie(models.Model):
 
 
 class Zamowienie(models.Model):
-    idzamowienia = models.AutoField(db_column='idZamowienia', primary_key=True)  # Field name made lowercase.
+    idzamowienia = models.AutoField(db_column='idZamowienia', primary_key=True)
     wartosc = models.IntegerField()
     data = models.DateField()
     status_zamowienia_slownik_idstatus_zamowienia_slownik = models.ForeignKey(StatusZamowieniaSlownik, models.DO_NOTHING, db_column='Status_zamowienia_slownik_idStatus_zamowienia_slownik')  # Field name made lowercase.
-    klienci_idklient = models.ForeignKey(Klienci, models.DO_NOTHING, db_column='Klienci_idKlient')  # Field name made lowercase.
+    klienci_idklient = models.ForeignKey(Klienci, models.DO_NOTHING, db_column='Klienci_idKlient')
+
+    def __str__(self):
+        return self.idzamowienia
 
     class Meta:
         managed = False
@@ -132,8 +171,12 @@ class Zamowienie(models.Model):
 
 class ZamowienieHasKsiazka(models.Model):
     ilosc = models.IntegerField()
-    zamowienia_idzamowienia = models.ForeignKey(Zamowienie, models.DO_NOTHING, db_column='Zamowienia_idZamowienia', primary_key=True)  # Field name made lowercase.
-    ksiazka_idksiazka = models.ForeignKey(Ksiazka, models.DO_NOTHING, db_column='Ksiazka_idKsiazka')  # Field name made lowercase.
+    zamowienia_idzamowienia = models.ForeignKey(Zamowienie, models.DO_NOTHING, db_column='Zamowienia_idZamowienia', primary_key=True)
+    ksiazka_idksiazka = models.ForeignKey(Ksiazka, models.DO_NOTHING, db_column='Ksiazka_idKsiazka')
+
+    def __str__(self):
+        data =  '%s %s' % (self.zamowienia_idzamowienia, self.ksiazka_idksiazka)
+        return unidecode(data)
 
     class Meta:
         managed = False

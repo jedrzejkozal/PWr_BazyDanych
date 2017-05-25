@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>Ksiegarnia internetowa</title>
+    </head>
+    <body>
+        <div>
+            <h1><a href="">Ksiegarnia internetowa</a></h1>
+        </div>
+
+        {% for book in books %}
+          <div>
+            <h1><a href="">{{ book.tytul }}</a></h1>
+            <p>autor: {{ book.autor }}</p>
+            <p>{{ book.opis|linebreaksbr }}</p>
+          </div>
+        {% endfor %}
+
+    </body>
+</html>
