@@ -1,19 +1,13 @@
-<html>
-    <head>
-        <title>Ksiegarnia internetowa</title>
-    </head>
-    <body>
-        <div>
-            <h1><a href="">Ksiegarnia internetowa</a></h1>
-        </div>
+{% extends 'app_shop/base.html' %}
 
-        {% for book in books %}
-          <div>
-            <h1><a href="">{{ book.tytul }}</a></h1>
-            <p>autor: {{ book.autor }}</p>
-            <p>{{ book.opis|linebreaksbr }}</p>
-          </div>
-        {% endfor %}
-
-    </body>
-</html>
+{% block content %}
+  {% for book in books %}
+    <div class="post">
+      <div class="date">
+        <p>autor: {{ book.autor }}</p>
+      </div>
+      <h1><a href="{% url 'book_detail' pk=book.idksiazka %}">{{ book.tytul }}</a></h1>
+      <p>{{ book.opis|linebreaksbr }}</p>
+    </div>
+  {% endfor %}
+{% endblock content %}

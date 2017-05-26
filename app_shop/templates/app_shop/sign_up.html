@@ -1,0 +1,15 @@
+{% extends 'app_shop/base.html' %}
+
+{% block content %}
+  <h1>Podaj swoje dane:<h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+      {{ form1.as_p }}
+    </form>
+  <h1>Podaj swoje dane adresowe:<h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+      {{ form2.as_p }}
+      <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+    <p><font color=#ffffff>a</color></p>
+    <p><font color=#ffffff>a</color></p>
+{% endblock content %}

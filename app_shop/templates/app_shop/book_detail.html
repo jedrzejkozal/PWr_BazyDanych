@@ -1,0 +1,10 @@
+{% extends 'app_shop/base.html' %}
+
+{% block content %}
+    <div class="post">
+      <h1>{{ book.autor }}</h1>
+        <h1>{{ book.tytul }}</h1>
+        <h1>{{ book.cena }}</h1>
+        <p>{{ book.opis|linebreaksbr }}</p>
+    </div>
+{% endblock %}
