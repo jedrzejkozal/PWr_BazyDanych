@@ -12,7 +12,7 @@ from text_unidecode import unidecode
 
 
 class Adres(models.Model):
-    idadres = models.AutoField(db_column='idAdres', primary_key=True)  # Field name made lowercase.
+    idadres = models.AutoField(db_column='idAdres', primary_key=True)
     miejscowosc = models.CharField(max_length=45)
     ulica = models.CharField(max_length=20, blank=True, null=True)
     nr_domu = models.CharField(max_length=5)
@@ -20,7 +20,7 @@ class Adres(models.Model):
     kod_pocztowy = models.IntegerField()
 
     def __str__(self):
-        data = '%s %s' % (self.miejscowosc, self.nr_domu)
+        data = '%s %s %s' % (self.miejscowosc, self.ulica, self.nr_domu)
         return unidecode(data)
 
     class Meta:
@@ -33,6 +33,7 @@ class KategoriaSlownik(models.Model):
     kategoria = models.CharField(max_length=20)
 
     def __str__(self):
+        #data = "%s %s" % (str(self.idkategoria), self.kategoria)
         data = self.kategoria
         return unidecode(data)
 
@@ -68,7 +69,7 @@ class Ksiazka(models.Model):
     opis = models.TextField(blank=True, null=True)
     ilosc = models.IntegerField()
     cena = models.IntegerField()
-    isbn = models.CharField(db_column='ISBN', max_length=20)  # Field name made lowercase.
+    isbn = models.CharField(db_column='ISBN', max_length=20)
     wydanie_idwydanie = models.ForeignKey('Wydanie', models.DO_NOTHING, db_column='Wydanie_idWydanie')
 
     def __str__(self):
@@ -82,22 +83,24 @@ class Ksiazka(models.Model):
 
 
 class KsiazkaHasKategoriaSlownik(models.Model):
-    ksiazka_idksiazka = models.ForeignKey(Ksiazka, models.DO_NOTHING, db_column='Ksiazka_idKsiazka', primary_key=True)  # Field name made lowercase.
-    kategoria_slownik_idkategoria = models.ForeignKey(KategoriaSlownik, models.DO_NOTHING, db_column='Kategoria_slownik_idKategoria')  # Field name made lowercase.
+    has_id = models.IntegerField(db_column='hasID', primary_key=True)
+    ksiazka_idksiazka = models.ForeignKey(Ksiazka, models.DO_NOTHING, db_column='Ksiazka_idKsiazka')
+    kategoria_slownik_idkategoria = models.ForeignKey(KategoriaSlownik, models.DO_NOTHING, db_column='Kategoria_slownik_idKategoria')
 
     def __str__(self):
         data = '%s %s' % (self.ksiazka_idksiazka, self.kategoria_slownik_idkategoria)
+        #data = self.kategoria_slownik_idkategoria
         return unidecode(data)
 
     class Meta:
         managed = False
         db_table = 'Ksiazka_has_Kategoria_slownik'
-        unique_together = (('ksiazka_idksiazka', 'kategoria_slownik_idkategoria'),)
+        unique_together = (('has_id','ksiazka_idksiazka', 'kategoria_slownik_idkategoria'),)
 
 
 class NazwaWydawnictwaSlownik(models.Model):
-    idnazwa_wyd = models.AutoField(db_column='idNazwa_wyd', primary_key=True)  # Field name made lowercase.
-    nazwa_wydawnictwa = models.CharField(db_column='Nazwa_wydawnictwa', max_length=45)  # Field name made lowercase.
+    idnazwa_wyd = models.AutoField(db_column='idNazwa_wyd', primary_key=True)
+    nazwa_wydawnictwa = models.CharField(db_column='Nazwa_wydawnictwa', max_length=45)
 
     def __str__(self):
         data = self.nazwa_wydawnictwa
@@ -108,11 +111,12 @@ class NazwaWydawnictwaSlownik(models.Model):
         db_table = 'Nazwa_wydawnictwa_slownik'
 
 
+
 class Recenzje(models.Model):
     idrecenzji = models.AutoField(primary_key=True)
     tresc = models.TextField()
-    klienci_idklient = models.ForeignKey(Klienci, models.DO_NOTHING, db_column='Klienci_idKlient')  # Field name made lowercase.
-    ksiazka_idksiazka = models.ForeignKey(Ksiazka, models.DO_NOTHING, db_column='Ksiazka_idKsiazka')  # Field name made lowercase.
+    klienci_idklient = models.ForeignKey(Klienci, models.DO_NOTHING, db_column='Klienci_idKlient')
+    ksiazka_idksiazka = models.ForeignKey(Ksiazka, models.DO_NOTHING, db_column='Ksiazka_idKsiazka')
 
     def __str__(self):
         data = self.tresc
@@ -141,11 +145,12 @@ class Wydanie(models.Model):
     rok_wyd = models.DateField(blank=True, null=True)
     miejsce = models.CharField(max_length=20, blank=True, null=True)
     oprawa = models.CharField(max_length=1, blank=True, null=True)
-    nazwa_wydawnictwa_slownik_idnazwa_wyd = models.ForeignKey(NazwaWydawnictwaSlownik, models.DO_NOTHING, db_column='Nazwa_wydawnictwa_slownik_idNazwa_wyd')  # Field name made lowercase.
+    nazwa_wydawnictwa_slownik_idnazwa_wyd = models.ForeignKey(NazwaWydawnictwaSlownik, models.DO_NOTHING, db_column='Nazwa_wydawnictwa_slownik_idNazwa_wyd')
 
     def __str__(self):
-        data = '%s %s' % (self.miejsce, self.rok_wyd)
-        return unidecode(data)
+        #data = '%s %s' % (self.miejsce, self.rok_wyd)
+        #return unidecode(data)
+        return unidecode(str(self.idwydanie))
 
     class Meta:
         managed = False
@@ -157,11 +162,11 @@ class Zamowienie(models.Model):
     idzamowienia = models.AutoField(db_column='idZamowienia', primary_key=True)
     wartosc = models.IntegerField()
     data = models.DateField()
-    status_zamowienia_slownik_idstatus_zamowienia_slownik = models.ForeignKey(StatusZamowieniaSlownik, models.DO_NOTHING, db_column='Status_zamowienia_slownik_idStatus_zamowienia_slownik')  # Field name made lowercase.
+    status_zamowienia_slownik_idstatus_zamowienia_slownik = models.ForeignKey(StatusZamowieniaSlownik, models.DO_NOTHING, db_column='Status_zamowienia_slownik_idStatus_zamowienia_slownik')
     klienci_idklient = models.ForeignKey(Klienci, models.DO_NOTHING, db_column='Klienci_idKlient')
 
     def __str__(self):
-        return self.idzamowienia
+        return str(self.idzamowienia)
 
     class Meta:
         managed = False
@@ -170,6 +175,7 @@ class Zamowienie(models.Model):
 
 
 class ZamowienieHasKsiazka(models.Model):
+    has_id = models.IntegerField(db_column='hasID', primary_key=True)
     ilosc = models.IntegerField()
     zamowienia_idzamowienia = models.ForeignKey(Zamowienie, models.DO_NOTHING, db_column='Zamowienia_idZamowienia', primary_key=True)
     ksiazka_idksiazka = models.ForeignKey(Ksiazka, models.DO_NOTHING, db_column='Ksiazka_idKsiazka')
@@ -181,4 +187,4 @@ class ZamowienieHasKsiazka(models.Model):
     class Meta:
         managed = False
         db_table = 'Zamowienie_has_Ksiazka'
-        unique_together = (('zamowienia_idzamowienia', 'ksiazka_idksiazka'),)
+        unique_together = (('has_id','zamowienia_idzamowienia', 'ksiazka_idksiazka'),)

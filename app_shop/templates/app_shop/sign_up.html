@@ -1,14 +1,12 @@
 {% extends 'app_shop/base.html' %}
 
 {% block content %}
+  <p><font color=#ff0000> {{ error_msg }} </font></p>
   <h1>Podaj swoje dane:<h1>
     <form method="POST" class="post-form">{% csrf_token %}
-      {{ form1.as_p }}
-    </form>
-  <h1>Podaj swoje dane adresowe:<h1>
-    <form method="POST" class="post-form">{% csrf_token %}
-      {{ form2.as_p }}
-      <button type="submit" class="save btn btn-default">Save</button>
+      {{ form_user.as_p }}
+      {{ form_adres.as_p }}
+      <button type="submit" class="save btn btn-default">Zapisz</button>
     </form>
     <p><font color=#ffffff>a</color></p>
     <p><font color=#ffffff>a</color></p>

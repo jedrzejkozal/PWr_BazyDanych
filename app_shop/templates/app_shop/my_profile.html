@@ -1,0 +1,47 @@
+{% extends 'app_shop/base.html' %}
+
+{% block content %}
+  <div>
+    <h1>Profil użytkownika: {{ usr.first.login }} </h1>
+    <h1> <font size="3">Imie:</font> {{ usr.first.imie }}</h1>
+    <h1> <font size="3">Nazwisko:</font> {{ usr.first.nazwisko }}</h1>
+    <h1> <font size="3">Email:</font> {{ usr.first.email }}</h1>
+    <h1> <font size="3">Miejscowość:</font> {{ adress.miejscowosc }}</h1>
+    <h1> <font size="3">Ulica:</font> {{ adress.ulica }}</h1>
+    <h1> <font size="3">Numer domu:</font> {{ adress.nr_domu }}</h1>
+    <h1> <font size="3">Numer mieszkania:</font> {{ adress.nr_mieszkania }}</h1>
+    <h1> <font size="3">Kod pocztowy:</font> {{ adress.kod_pocztowy }}</h1>
+
+    <h1> Twoje recenzje: </h1>
+    {% for review in reviews %}
+      <h2> <font size="3">Tytuł:</font> {{ review.ksiazka_idksiazka }}
+      <p> {{ review.tresc }}</h1>
+    {% endfor %}
+
+    <h1> Zamówienia: </h1>
+    {% for order, book in list %}
+      <p> <font size="3">Data:</font> {{ order.data }} </p>
+      <p> <font size="3">Wartość:</font> {{ order.wartosc }} </p>
+      <p> <font size="3">Status:</font>
+        {% if order.status_zamowienia_slownik_idstatus_zamowienia_slownik == status1 %}
+          niekatynwe
+        {% elif order.status_zamowienia_slownik_idstatus_zamowienia_slownik == status2 %}
+          aktywne
+        {% elif order.status_zamowienia_slownik_idstatus_zamowienia_slownik == status3 %}
+          gotowe do wysłania
+        {% elif order.status_zamowienia_slownik_idstatus_zamowienia_slownik == status4 %}
+          wysłane
+        {% elif order.status_zamowienia_slownik_idstatus_zamowienia_slownik == status5 %}
+          zrealizowane
+        {% else %}
+          niewłaściwy status zamówienia
+        {% endif %}
+      <p> Ksiażki: </p>
+      <p> {{ book }} </p>
+
+    {% endfor %}
+
+
+  </div>
+
+{% endblock content %}

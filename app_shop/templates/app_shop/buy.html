@@ -1,0 +1,11 @@
+{% extends 'app_shop/base.html' %}
+
+{% block content %}
+  <p><font color=#ff0000> {{ error_msg }} </font></p>
+  <form method="post"> {% csrf_token %}
+    <p> Cena za sztukę: {{ cena }} </p>
+    {{ form_buy|linebreaksbr }}
+    <p> ({{ ilosc }} dostępnych w magazynie) </p>
+    <button type="submit" class="save btn btn-default">Zamawiam</button>
+  </form>
+{% endblock %}

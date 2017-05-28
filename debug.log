@@ -1,0 +1,7 @@
+<tr><th><label for="id_user-login">Login:</label></th><td><input type="text" name="user-login" required id="id_user-login" maxlength="15" /></td></tr>
+<tr><th><label for="id_user-haslo">Haslo:</label></th><td><input type="text" name="user-haslo" required id="id_user-haslo" maxlength="45" /></td></tr>
+<tr><th><label for="id_user-imie">Imie:</label></th><td><input type="text" name="user-imie" required id="id_user-imie" maxlength="30" /></td></tr>
+<tr><th><label for="id_user-nazwisko">Nazwisko:</label></th><td><input type="text" name="user-nazwisko" required id="id_user-nazwisko" maxlength="30" /></td></tr>
+<tr><th><label for="id_user-email">Email:</label></th><td><input type="text" name="user-email" required id="id_user-email" maxlength="30" /></td></tr>
+<tr><th><label for="id_user-telefon">Telefon:</label></th><td><input type="number" name="user-telefon" id="id_user-telefon" /></td></tr>
+

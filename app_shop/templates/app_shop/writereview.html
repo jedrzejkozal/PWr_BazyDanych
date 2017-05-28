@@ -1,0 +1,11 @@
+{% extends 'app_shop/base.html' %}
+
+{% block content %}
+<h1>Recenzja: {{ book.first.tytul }} </h1>
+<p><font color=#ff0000> {{ error_msg }} </font></p>
+  <form method="POST" class="post-form">{% csrf_token %}
+    {{ form_review.as_p }}
+    <button type="submit" class="save btn btn-default">Zapisz</button>
+  </form>
+
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% extends 'app_shop/base.html' %}
+
+{% block content %}
+  <p><font color=#ff0000> {{ error_msg }} </font></p>
+  <form method="post"> {% csrf_token %}
+    {{ form_usr|linebreaksbr }}
+    <p></p>
+    <button type="submit">Zaloguj</button>
+  </form>
+{% endblock content %}

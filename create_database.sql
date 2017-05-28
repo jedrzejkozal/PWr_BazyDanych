@@ -74,9 +74,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `Ksiegarnia`.`Ksiazka_has_Kategoria_slownik` ;
 
 CREATE TABLE IF NOT EXISTS `Ksiegarnia`.`Ksiazka_has_Kategoria_slownik` (
+  `hasID` INT NOT NULL AUTO_INCREMENT,
   `Ksiazka_idKsiazka` INT NOT NULL,
   `Kategoria_slownik_idKategoria` INT NOT NULL,
-  PRIMARY KEY (`Ksiazka_idKsiazka`, `Kategoria_slownik_idKategoria`),
+  PRIMARY KEY (`hasID`, `Ksiazka_idKsiazka`, `Kategoria_slownik_idKategoria`),
   CONSTRAINT `fk_Ksiazka_has_Kategoria_slownik_Ksiazka1`
     FOREIGN KEY (`Ksiazka_idKsiazka`)
     REFERENCES `Ksiegarnia`.`Ksiazka` (`idKsiazka`)
@@ -210,10 +211,11 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `Ksiegarnia`.`Zamowienie_has_Ksiazka` ;
 
 CREATE TABLE IF NOT EXISTS `Ksiegarnia`.`Zamowienie_has_Ksiazka` (
+  `hasID` INT NOT NULL AUTO_INCREMENT,
   `ilosc` TINYINT NOT NULL,
   `Zamowienia_idZamowienia` INT NOT NULL,
   `Ksiazka_idKsiazka` INT NOT NULL,
-  PRIMARY KEY (`Zamowienia_idZamowienia`, `Ksiazka_idKsiazka`),
+  PRIMARY KEY (`hasID`,`Zamowienia_idZamowienia`, `Ksiazka_idKsiazka`),
   CONSTRAINT `fk_Zamowienia_has_Ksiazka_Zamowienia1`
     FOREIGN KEY (`Zamowienia_idZamowienia`)
     REFERENCES `Ksiegarnia`.`Zamowienie` (`idZamowienia`)

@@ -1,10 +1,56 @@
 {% extends 'app_shop/base.html' %}
 
 {% block content %}
-    <div class="post">
-      <h1>{{ book.autor }}</h1>
-        <h1>{{ book.tytul }}</h1>
-        <h1>{{ book.cena }}</h1>
-        <p>{{ book.opis|linebreaksbr }}</p>
+    <div >
+      <h1> <font size="3">Autor:</font> {{ book.autor }}</h1>
+        <h1> <font size="3">Tytuł:</font> {{ book.tytul }}</h1>
+        <h1> <font size="3">cena:</font> {{ book.cena }}</h1>
+        <h1> <font size="3">ilosc:</font> {{ book.ilosc }}</h1>
+        <h1> <font size="3">ISBN:</font> {{ book.isbn }}</h1>
+        <h1> <font size="3">wydawnictwo:</font> {{ pub_name.nazwa_wydawnictwa }} </h1>
+        <h1> <font size="3">rok wydania:</font> {{ pub_house.rok_wyd }}</h1>
+        <h1> <font size="3">miejsce wydania:</font> {{ pub_house.miejsce }}</h1>
+        {% if pub_house.oprawa == t %}
+          <h1> <font size="3">oprawa: </font> twarda </h1>
+        {% else %}
+          <h1> <font size="3">oprawa:</font> miękka </h1>
+        {% endif %}
+        <p>opis:</p>
+        {% if book.opis == None %}
+          <p>Ta ksiażka jeszcze nie ma opisu.</p>
+        {% else %}
+          <p>{{ book.opis }}</p>
+        {% endif %}
+    </div>
+    {% if loged_in %}
+      <button name="subject" type="submit"
+      style="display:inline; font-size: 17; background-color:#ffffff;">
+      <a href="{% url 'buy' pk=book.idksiazka %}">KUP</a></button>
+      <button name="subject" type="submit"
+      style="display:inline; font-size: 17; background-color:#ffffff;">
+      <a href="{% url 'writereview' pk=book.idksiazka %}">DODAJ RECENZJĘ</a></button>
+    {% endif %}
+    <p>Kategorie:</p>
+    <div ; >
+      {% if tags_exist %}
+        {% for tag in tags %}
+          <button name="subject" type="submit"
+          style="display:inline; font-size: 15; background-color:#635449;">
+          <a href="{% url 'category' pk=tag.kategoria_slownik_idkategoria %}">
+          {{ tag.kategoria_slownik_idkategoria }}</a></button>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div>
+      <h1>Recenzje:</h2>
+      {% if review_exist %}
+        {% for review in reviews %}
+          <h1><font size="3">Autor:</font> {{ review.klienci_idklient }} </h1>
+          <p>{{ review.tresc }}</p>
+          {% endfor %}
+      {% else %}
+        <p>Ta książka nie posiada jeszcze recenzji na naszym portalu</p>
+      {% endif %}
     </div>
 {% endblock %}

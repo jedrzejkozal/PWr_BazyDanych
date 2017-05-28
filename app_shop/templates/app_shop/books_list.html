@@ -7,7 +7,9 @@
         <p>autor: {{ book.autor }}</p>
       </div>
       <h1><a href="{% url 'book_detail' pk=book.idksiazka %}">{{ book.tytul }}</a></h1>
-      <p>{{ book.opis|linebreaksbr }}</p>
+      {% if book.opis != None %}
+        <p>{{ book.opis|linebreaksbr }}</p>
+      {% endif %}
     </div>
   {% endfor %}
 {% endblock content %}
