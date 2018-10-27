@@ -28,7 +28,6 @@ from .forms import BuyForm
 
 def debug(arg_str):
     f = open('debug.log', 'w')
-    #f.truncate()
     f.write(arg_str)
     f.write('\n\n')
     f.close()
@@ -69,20 +68,8 @@ def books_list(request, loged_in=False):
 def book_detail(request, pk):
     book = get_object_or_404(Ksiazka, idksiazka=pk)
     reviews = Recenzje.objects.filter(ksiazka_idksiazka=pk)
-    #debug(str(getattr(book,'wydanie_idwydanie')))
-    pub_house = getattr(book,'wydanie_idwydanie') #Wydanie.objects.filter(idwydanie=getattr(book,'wydanie_idwydanie')) #getattr(book,'wydanie_idwydanie')
+    pub_house = getattr(book,'wydanie_idwydanie')
     pub_name = getattr(pub_house, 'nazwa_wydawnictwa_slownik_idnazwa_wyd')
-    #debug(review)
-    #tmp = review[0].values('klienci_idklient')
-    #tmp = review.get_field('klienci_idklient')
-    #tmp = getattr(reviews[0], 'klienci_idklient')
-    #debug(tmp)
-    #review_author = Klienci.objects.filter(login=tmp)
-    #if review_author.exists():
-    #    review_author=review_author[0].login
-    #else:
-    #    review_author="Konto nieaktywne"
-    #review_author=str(getattr(reviews[0], 'klienci_idklient'))
 
     tags = KsiazkaHasKategoriaSlownik.objects.filter(ksiazka_idksiazka=pk)
 
@@ -222,10 +209,8 @@ def acountdetails(request):
         orders = Zamowienie.objects.filter(klienci_idklient=usr_id)
         tmp = ZamowienieHasKsiazka.objects.filter(zamowienia_idzamowienia__in=orders)
         books = Ksiazka.objects.filter(idksiazka__in=tmp.values('ksiazka_idksiazka'))
-        #statuses = StatusZamowieniaSlownik.objects.filter(idstatus_zamowienia_slownik__in=orders.values('idstatus_zamowienia_slownik'))
         statuses = StatusZamowieniaSlownik.objects.filter()
         list_ord = zip(orders,books)
-        #debug(str(books))
 
     else:
         return redirect('/')
